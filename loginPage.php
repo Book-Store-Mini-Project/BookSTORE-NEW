@@ -1,19 +1,91 @@
+<?php
+session_start();
+require_once 'config/db_connection.php';
+
+$signup_msg = "";
+$signin_msg = "";
+
+// ----------------- SIGN UP -----------------
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password_plain = $_POST['password'];
+
+    if ($name === "" || $email === "" || $password_plain === "") {
+        $signup_msg = "Please fill all fields.";
+    } else {
+        $check = mysqli_prepare($conn, "SELECT id FROM users WHERE email = ?");
+        mysqli_stmt_bind_param($check, "s", $email);
+        mysqli_stmt_execute($check);
+        mysqli_stmt_store_result($check);
+
+        if (mysqli_stmt_num_rows($check) > 0) {
+            $signup_msg = "Email already registered.";
+        } else {
+            $hash = password_hash($password_plain, PASSWORD_BCRYPT);
+            $insert = mysqli_prepare($conn, "INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($insert, "sss", $name, $email, $hash);
+            if (mysqli_stmt_execute($insert)) {
+                $signup_msg = "Registration successful! You can sign in now.";
+            } else {
+                $signup_msg = "Registration failed. Try again.";
+            }
+            mysqli_stmt_close($insert);
+        }
+        mysqli_stmt_close($check);
+    }
+}
+
+// ----------------- SIGN IN -----------------
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signin'])) {
+    $email = trim($_POST['L_email']);
+    $password_plain = $_POST['L_password'];
+
+    if ($email === "" || $password_plain === "") {
+        $signin_msg = "Please enter email and password.";
+    } else {
+        $stmt = mysqli_prepare($conn, "SELECT id, name, email, password FROM users WHERE email = ?");
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $uid, $uname, $uemail, $uhash);
+
+        if (mysqli_stmt_fetch($stmt)) {
+            if (password_verify($password_plain, $uhash)) {
+                $_SESSION['user_id'] = $uid;
+                $_SESSION['user_name'] = $uname;
+                $_SESSION['user_email'] = $uemail;
+                mysqli_stmt_close($stmt);
+                mysqli_close($conn);
+                header("Location: index.php");
+                exit;
+            } else {
+                $signin_msg = "Incorrect password.";
+            }
+        } else {
+            $signin_msg = "No account found with that email.";
+        }
+        mysqli_stmt_close($stmt);
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>READIFY Bookstore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="./css/login.css">
-    <title>READIFY Bookstore</title>
 </head>
 
 <body>
 
     <div class="container" id="container">
+        <!-- Sign Up Form -->
         <div class="form-container sign-up">
-            <form id="sign-UP">
+            <form method="POST" action="">
                 <h1>READIFY</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -21,15 +93,18 @@
                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
-                <span>or use your email for registeration</span>
-                <input type="text" placeholder="Name" id="name">
-                <input type="email" placeholder="Email" id="email">
-                <input type="password" placeholder="Password" id="password">
-                <button>Sign Up</button>
+                <span>or use your email for registration</span>
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit" name="signup">Sign Up</button>
+                <?php if ($signup_msg != "") echo "<p class='msg'>$signup_msg</p>"; ?>
             </form>
         </div>
+
+        <!-- Sign In Form -->
         <div class="form-container sign-in">
-            <form id="sign-IN">
+            <form method="POST" action="">
                 <h1>Sign In</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -38,13 +113,15 @@
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
                 <span>or use your email password</span>
-                <input type="email" placeholder="Email" id="L_email">
-                <input type="password" placeholder="Password" id="L_password">
+                <input type="email" name="L_email" placeholder="Email" required>
+                <input type="password" name="L_password" placeholder="Password" required>
                 <a href="#">Forget Your Password?</a>
-                <button>Sign In</button>
+                <button type="submit" name="signin">Sign In</button>
+                <?php if ($signin_msg != "") echo "<p class='msg'>$signin_msg</p>"; ?>
             </form>
-            
         </div>
+
+        <!-- Toggle Section -->
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
@@ -62,73 +139,6 @@
     </div>
 
     <script src="./js/login.js"></script>
-
-<?php
-// ---------------------- DATABASE CONNECTION ----------------------
-$host = "localhost";
-$user = "root";
-$pass = "";
-$dbname = "readify_db"; // your database name
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Database connection failed: " . $conn->connect_error);
-}
-
-// ---------------------- SIGN UP LOGIC ----------------------
-if (isset($_POST['signup'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-    // Check if email already exists
-    $check = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $check->bind_param("s", $email);
-    $check->execute();
-    $result = $check->get_result();
-
-    if ($result->num_rows > 0) {
-        echo "<script>alert('Email already registered!');</script>";
-    } else {
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $name, $email, $password);
-        if ($stmt->execute()) {
-            echo "<script>alert('Registration Successful! You can now log in.');</script>";
-        } else {
-            echo "<script>alert('Error during registration.');</script>";
-        }
-        $stmt->close();
-    }
-}
-
-// ---------------------- SIGN IN LOGIC ----------------------
-if (isset($_POST['signin'])) {
-    $email = $_POST['L_email'];
-    $password = $_POST['L_password'];
-
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
-
-        if (password_verify($password, $user['password'])) {
-            session_start();
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
-            echo "<script>alert('Login Successful!'); window.location.href='home.php';</script>";
-        } else {
-            echo "<script>alert('Incorrect password!');</script>";
-        }
-    } else {
-        echo "<script>alert('No account found with that email!');</script>";
-    }
-}
-?>
 </body>
 
 </html>
