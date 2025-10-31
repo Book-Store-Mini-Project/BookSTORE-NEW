@@ -1,0 +1,141 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "readify_db";
+
+// Connect to MySQL
+$conn = new mysqli($servername, $username, $password);
+$conn->query("CREATE DATABASE IF NOT EXISTS $dbname");
+$conn->select_db($dbname);
+
+// Create orders table if not exists
+$conn->query("
+    CREATE TABLE IF NOT EXISTS orders (
+        order_id INT AUTO_INCREMENT PRIMARY KEY,
+        book_name VARCHAR(255) NOT NULL,
+        total_price DECIMAL(10,2) NOT NULL,
+        order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+");
+
+// Handle form submit
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $book_name = trim($_POST['book_name']);
+    $total_price = (float)$_POST['total_price'];
+
+    if (!empty($book_name) && $total_price > 0) {
+        $stmt = $conn->prepare("INSERT INTO orders (book_name, total_price) VALUES (?, ?)");
+        $stmt->bind_param("sd", $book_name, $total_price);
+        $stmt->execute();
+        echo "<script>alert('Order placed successfully!');</script>";
+    } else {
+        echo "<script>alert('Please enter book name and total price!');</script>";
+    }
+}
+
+// Get the last order
+$result = $conn->query("SELECT * FROM orders ORDER BY order_id DESC LIMIT 1");
+$last_order = $result ? $result->fetch_assoc() : null;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>READIFY Bookstore - Order</title>
+  <link rel="icon" type="image/png" href="/assets/img-title.png">
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/order.css" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="container-inner">
+      <a href="index.html" class="logo-link">
+        <div class="logo">
+          <h1>READIFY</h1>
+          <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
+        </div>
+      </a>
+      <button class="hamburger" id="hamburger">&#9776;</button>
+      <nav class="nav-link" id="nav">
+        <button class="close-icon" id="close-icon">&times;</button>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./product.php">Books</a></li>
+          <li><a href="./aboutus.php">About Us</a></li>
+          <li><a href="./contact.php">Contact Us</a></li>
+          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./orders.php">Orders</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <h1 style="text-align:center;margin-top:50px;margin-bottom:30px;">Place Your Order</h1>
+
+  <div style="text-align:center; margin-bottom:50px;">
+    <form method="POST" style="display:inline-block; text-align:left; padding:20px; border:1px solid #ccc; border-radius:10px;">
+      <label>Book Name:</label><br>
+      <input type="text" name="book_name" required><br><br>
+
+      <label>Total Price:</label><br>
+      <input type="number" name="total_price" step="0.01" required><br><br>
+
+      <button type="submit">Place Order</button>
+    </form>
+  </div>
+
+  <div id="lastOrder" style="text-align:center; margin-bottom:100px;">
+    <?php if ($last_order): ?>
+      <h2>Last Order Summary</h2>
+      <p><strong>Book:</strong> <?php echo htmlspecialchars($last_order['book_name']); ?></p>
+      <p><strong>Total Price:</strong> Rs.<?php echo $last_order['total_price']; ?></p>
+      <p><strong>Date:</strong> <?php echo $last_order['order_date']; ?></p>
+    <?php else: ?>
+      <p>No orders placed yet.</p>
+    <?php endif; ?>
+  </div>
+
+  <section class="footer" style="width: 100%;">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Useful Links</h4>
+        <ul class="links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./aboutus.php">About Us</a></li>
+          <li><a href="./contact.html">Contact Us</a></li>
+          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./orders.php">Orders</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="/feedback.html">Customer Feedback</a></li>
+          <li><a href="/offers.html">Offers</a></li>
+          <li><a href="/payment.html">Payment</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul class="links">
+          <li><a href="/policy.html">Privacy Policy</a></li>
+          <li><a href="/FAQ.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p>Subscribe to our newsletter for updates and exclusive offers.</p>
+        <form action="#">
+          <input type="text" placeholder="Your email" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
