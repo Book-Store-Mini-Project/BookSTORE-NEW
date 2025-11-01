@@ -46,7 +46,6 @@ function renderSlider() {
   }
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
   //slider call
   renderSlider();

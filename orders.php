@@ -1,46 +1,53 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "readify_db";
+require "./config/db_connection.php";
 
-// Connect to MySQL
-$conn = new mysqli($servername, $username, $password);
-$conn->query("CREATE DATABASE IF NOT EXISTS $dbname");
-$conn->select_db($dbname);
-
-// Create orders table if not exists
+// Create table if not exists
 $conn->query("
-    CREATE TABLE IF NOT EXISTS orders (
-        order_id INT AUTO_INCREMENT PRIMARY KEY,
-        book_name VARCHAR(255) NOT NULL,
-        total_price DECIMAL(10,2) NOT NULL,
-        order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
+  CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 ");
 
-// Handle form submit
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $book_name = trim($_POST['book_name']);
-    $total_price = (float)$_POST['total_price'];
+// Create table if not exists
+$conn->query("
+ CREATE TABLE order_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT,
+  title VARCHAR(255),
+  price DECIMAL(10,2),
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+");
 
-    if (!empty($book_name) && $total_price > 0) {
-        $stmt = $conn->prepare("INSERT INTO orders (book_name, total_price) VALUES (?, ?)");
-        $stmt->bind_param("sd", $book_name, $total_price);
-        $stmt->execute();
-        echo "<script>alert('Order placed successfully!');</script>";
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $book_name = trim($_POST['book_name']);
+  $total_price = (float)$_POST['total_price'];
+
+  if (!empty($book_name) && $total_price > 0) {
+    $stmt = $conn->prepare("INSERT INTO orders (book_name, total_price) VALUES (?, ?)");
+    $stmt->bind_param("sd", $book_name, $total_price);
+    if ($stmt->execute()) {
+      echo "<script>alert('Order placed successfully!');</script>";
     } else {
-        echo "<script>alert('Please enter book name and total price!');</script>";
+      echo "<script>alert('Error placing order. Please try again.');</script>";
     }
+    $stmt->close();
+  } else {
+    echo "<script>alert('Please enter book name and total price!');</script>";
+  }
 }
 
-// Get the last order
+// Fetch the last order
 $result = $conn->query("SELECT * FROM orders ORDER BY order_id DESC LIMIT 1");
-$last_order = $result ? $result->fetch_assoc() : null;
+$last_order = $result && $result->num_rows > 0 ? $result->fetch_assoc() : null;
+$conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,6 +59,7 @@ $last_order = $result ? $result->fetch_assoc() : null;
 </head>
 
 <body>
+  <!-- Header -->
   <header class="header">
     <div class="container-inner">
       <a href="index.html" class="logo-link">
@@ -77,29 +85,32 @@ $last_order = $result ? $result->fetch_assoc() : null;
 
   <h1 style="text-align:center;margin-top:50px;margin-bottom:30px;">Place Your Order</h1>
 
+  <!-- Order Form -->
   <div style="text-align:center; margin-bottom:50px;">
     <form method="POST" style="display:inline-block; text-align:left; padding:20px; border:1px solid #ccc; border-radius:10px;">
       <label>Book Name:</label><br>
       <input type="text" name="book_name" required><br><br>
 
-      <label>Total Price:</label><br>
+      <label>Total Price (Rs.):</label><br>
       <input type="number" name="total_price" step="0.01" required><br><br>
 
       <button type="submit">Place Order</button>
     </form>
   </div>
 
+  <!-- Last Order Summary -->
   <div id="lastOrder" style="text-align:center; margin-bottom:100px;">
     <?php if ($last_order): ?>
       <h2>Last Order Summary</h2>
-      <p><strong>Book:</strong> <?php echo htmlspecialchars($last_order['book_name']); ?></p>
-      <p><strong>Total Price:</strong> Rs.<?php echo $last_order['total_price']; ?></p>
-      <p><strong>Date:</strong> <?php echo $last_order['order_date']; ?></p>
+      <p><strong>Book:</strong> <?= htmlspecialchars($last_order['book_name']); ?></p>
+      <p><strong>Total Price:</strong> Rs.<?= htmlspecialchars($last_order['total_price']); ?></p>
+      <p><strong>Date:</strong> <?= htmlspecialchars($last_order['order_date']); ?></p>
     <?php else: ?>
       <p>No orders placed yet.</p>
     <?php endif; ?>
   </div>
 
+  <!-- Footer -->
   <section class="footer" style="width: 100%;">
     <div class="footer-row">
       <div class="footer-col">
@@ -115,7 +126,7 @@ $last_order = $result ? $result->fetch_assoc() : null;
       <div class="footer-col">
         <h4>Explore</h4>
         <ul class="links">
-          <li><a href="/feedback.html">Customer Feedback</a></li>
+          <li><a href="/feedback.php">Customer Feedback</a></li>
           <li><a href="/offers.html">Offers</a></li>
           <li><a href="/payment.html">Payment</a></li>
         </ul>
@@ -138,4 +149,5 @@ $last_order = $result ? $result->fetch_assoc() : null;
     </div>
   </section>
 </body>
+
 </html>

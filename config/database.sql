@@ -68,6 +68,18 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE payments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT,
+  card_name VARCHAR(255),
+  card_number VARCHAR(20),
+  exp_date VARCHAR(10),
+  cvv VARCHAR(10),
+  total DECIMAL(10,2),
+  payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
 INSERT INTO faq (question, answer) VALUES
 ('What types of books do you sell?', 'We offer a wide range of books including fiction, non-fiction, academic, children\'s books, and more.'),
 ('How can I place an order?', 'You can place an order by browsing our collection, adding items to your cart, and proceeding to checkout.'),
