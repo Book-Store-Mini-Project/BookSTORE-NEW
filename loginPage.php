@@ -2,6 +2,8 @@
 session_start();
 require_once 'config/db_connection.php';
 
+
+
 $signup_msg = "";
 $signin_msg = "";
 

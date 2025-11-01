@@ -32,7 +32,7 @@
           <li><a href="./cart.php">Cart</a></li>
 
           <li id="user-info"></li>
-          <li><a href="#" id="auth-action">Sign In</a></li>
+          <li><a href="./loginPage.php" id="auth-action">Sign In</a></li>
 
         </ul>
 
@@ -88,32 +88,34 @@
 
   </div>
 
+  
   <!-- Footer -->
   <section class="footer">
     <div class="footer-row">
       <div class="footer-col">
         <h4>Useful Links</h4>
         <ul class="links">
-          <li><a href="./index.html">Home</a></li>
+          <li><a href="./index.php">Home</a></li>
           <li><a href="./aboutus.php">About Us</a></li>
-          <li><a href="./contact.html">Contact Us</a></li>
-          <li><a href="./cart.html">Cart</a></li>
-          <li><a href="./orders.html">Orders</a></li>
+          <li><a href="./contact.php">Contact Us</a></li>
+          <li><a href="./cart.php">Cart</a></li>
+          <li><a href="./orders.php">Orders</a></li>
+
         </ul>
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
         <ul class="links">
-          <li><a href="/feedback.html">Customer Feedback</a></li>
-          <li><a href="/offers.html">Offers</a></li>
-          <li><a href="/payment.html">payment</a></li>
+          <li><a href="/feedback.php">Customer Feedback</a></li>
+          <li><a href="/offers.php">Offers</a></li>
+          <li><a href="/payment.php">payment</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul class="links">
-          <li><a href="/policy.html">Privacy Policy</a></li>
-          <li><a href="/FAQ.php">FAQ</a></li>
+          <li><a href="/policy.php">Privacy Policy</a></li>
+          <li><a href="./FAQ.php">FAQ</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -126,12 +128,12 @@
           <input type="text" placeholder="Your email" required />
           <button type="submit">SUBSCRIBE</button>
         </form>
+
       </div>
     </div>
   </section>
 
-
-  <script src="./js/main.js"></script>
+  <script src="/js/main.js"></script>
 </body>
 
 </html>

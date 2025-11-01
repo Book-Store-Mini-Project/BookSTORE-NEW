@@ -91,6 +91,7 @@ session_start();
     </div>
   </section>
 
+ 
   <!-- Footer -->
   <section class="footer">
     <div class="footer-row">
@@ -102,6 +103,7 @@ session_start();
           <li><a href="./contact.php">Contact Us</a></li>
           <li><a href="./cart.php">Cart</a></li>
           <li><a href="./orders.php">Orders</a></li>
+
         </ul>
       </div>
       <div class="footer-col">
@@ -109,25 +111,32 @@ session_start();
         <ul class="links">
           <li><a href="/feedback.php">Customer Feedback</a></li>
           <li><a href="/offers.php">Offers</a></li>
-          <li><a href="/payment.php">Payment</a></li>
+          <li><a href="/payment.php">payment</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul class="links">
           <li><a href="/policy.php">Privacy Policy</a></li>
-          <li><a href="/FAQ.php">FAQ</a></li>
+          <li><a href="./FAQ.php">FAQ</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Newsletter</h4>
+        <p>
+          Subscribe to our newsletter for a weekly dose of news, updates,
+          helpful tips, and exclusive offers.
+        </p>
         <form action="#">
           <input type="text" placeholder="Your email" required />
           <button type="submit">SUBSCRIBE</button>
         </form>
+
       </div>
     </div>
   </section>
+
+  <script src="/js/main.js"></script>
 </body>
 
 </html>

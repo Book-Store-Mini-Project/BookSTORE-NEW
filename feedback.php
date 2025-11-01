@@ -45,12 +45,12 @@ mysqli_close($conn);
       <button class="hamburger" id="hamburger">&#9776;</button>
       <nav class="nav-link" id="nav">
         <button class="close-icon" id="close-icon">&times;</button>
-        <ul>
+<ul>
           <li><a href="./index.php">Home</a></li>
           <li><a href="./product.php">Books</a></li>
           <li><a href="./aboutus.php">About Us</a></li>
           <li><a href="./contact.php">Contact Us</a></li>
-          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./cart.php">Cart</a></li>
         </ul>
       </nav>
     </div>
@@ -101,20 +101,52 @@ mysqli_close($conn);
   <?php endif; ?>
 </div>
 
-<!-- Footer -->
-<section class="footer">
-  <div class="footer-row">
-    <div class="footer-col">
-      <h4>Useful Links</h4>
-      <ul class="links">
-        <li><a href="./index.php">Home</a></li>
-        <li><a href="./aboutus.php">About Us</a></li>
-        <li><a href="./contact.php">Contact Us</a></li>
-        <li><a href="./cart.html">Cart</a></li>
-      </ul>
-    </div>
-  </div>
-</section>
 
+  <!-- Footer -->
+  <section class="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Useful Links</h4>
+        <ul class="links">
+          <li><a href="./index.php">Home</a></li>
+          <li><a href="./aboutus.php">About Us</a></li>
+          <li><a href="./contact.php">Contact Us</a></li>
+          <li><a href="./cart.php">Cart</a></li>
+          <li><a href="./orders.php">Orders</a></li>
+
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="/feedback.php">Customer Feedback</a></li>
+          <li><a href="/offers.php">Offers</a></li>
+          <li><a href="/payment.php">payment</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul class="links">
+          <li><a href="/policy.php">Privacy Policy</a></li>
+          <li><a href="./FAQ.php">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p>
+          Subscribe to our newsletter for a weekly dose of news, updates,
+          helpful tips, and exclusive offers.
+        </p>
+        <form action="#">
+          <input type="text" placeholder="Your email" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="/js/main.js"></script>
 </body>
+
 </html>
