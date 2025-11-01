@@ -116,10 +116,10 @@ $conn->close();
       <div class="footer-col">
         <h4>Useful Links</h4>
         <ul class="links">
-          <li><a href="./index.html">Home</a></li>
+          <li><a href="./index.php">Home</a></li>
           <li><a href="./aboutus.php">About Us</a></li>
-          <li><a href="./contact.html">Contact Us</a></li>
-          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./contact.php">Contact Us</a></li>
+          <li><a href="./cart.php">Cart</a></li>
           <li><a href="./orders.php">Orders</a></li>
         </ul>
       </div>

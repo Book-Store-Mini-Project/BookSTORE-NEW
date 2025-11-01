@@ -25,11 +25,11 @@
       <nav class="nav-link" id="nav">
         <button class="close-icon" id="close-icon">&times;</button>
         <ul>
-          <li><a href="./index.html">Home</a></li>
+          <li><a href="./index.php">Home</a></li>
           <li><a href="./product.php">Books</a></li>
           <li><a href="./aboutus.php">About Us</a></li>
           <li><a href="./contact.php">Contact Us</a></li>
-          <li><a href="./cart.html">Cart</a></li>
+          <li><a href="./cart.php">Cart</a></li>
 
           <li id="user-info"></li>
           <li><a href="#" id="auth-action">Sign In</a></li>
@@ -72,7 +72,7 @@
                         </div>
                         <p class='price'>Rs. {$book['price']}</p>
                         <p class='description'>{$book['description']}</p>
-                        <a href='add_to_cart.php?book_id={$book['id']}'>
+                        <a href='cart.php?book_id={$book['id']}'>
                             <button class='addCart'>Add to Cart</button>
                         </a>
                     </div>
