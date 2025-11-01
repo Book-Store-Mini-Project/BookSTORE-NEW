@@ -258,7 +258,7 @@ mysqli_close($conn);
           <li><a href="./aboutus.php">About Us</a></li>
           <li><a href="./contact.html">Contact Us</a></li>
           <li><a href="./cart.html">Cart</a></li>
-          <li><a href="./orders.html">Orders</a></li>
+          <li><a href="./orders.php">Orders</a></li>
         </ul>
       </div>
       <div class="footer-col">
