@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS users (
 
  CREATE TABLE cart (
   cart_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
   book_id INT NOT NULL,
   quantity INT NOT NULL DEFAULT 1,
   image_path VARCHAR(255),
@@ -77,16 +78,25 @@ CREATE TABLE IF NOT EXISTS users (
  );
 
 CREATE TABLE payments (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  order_id INT,
-  card_name VARCHAR(255),
-  card_number VARCHAR(20),
+  payment_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
   exp_date VARCHAR(10),
-  cvv VARCHAR(10),
   total DECIMAL(10,2),
-  payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (order_id) REFERENCES orders(id)
+  status ENUM('pending', 'completed') DEFAULT 'completed',
+  payment_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE orders (
+  order_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  book_id INT NOT NULL,
+  quantity INT NOT NULL,
+  total DECIMAL(10,2) NOT NULL,
+  order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (order_id, user_id, book_id)
+);
+
+
 
 INSERT INTO faq (question, answer) VALUES
 ('What types of books do you sell?', 'We offer a wide range of books including fiction, non-fiction, academic, children\'s books, and more.'),
