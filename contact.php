@@ -102,7 +102,7 @@ session_start();
           <li><a href="./aboutus.php">About Us</a></li>
           <li><a href="./contact.php">Contact Us</a></li>
           <li><a href="./cart.php">Cart</a></li>
-          <li><a href="./orders.php">Orders</a></li>
+          <li><a href="./ordered_items.php">Orders</a></li>
 
         </ul>
       </div>
