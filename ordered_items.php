@@ -143,6 +143,7 @@ if (mysqli_num_rows($result) > 0) {
 
     <a href="index.php" class="home-btn">Back to Home</a>
   </div>
-
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>

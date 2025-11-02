@@ -182,7 +182,7 @@ mysqli_close($conn);
     <div class="sidebar">
         <div class="logo">
             <i class="fas fa-book-reader"></i>
-            <h2>BookStore Admin</h2>
+            <h2>READIFY Admin</h2>
         </div>
         <nav class="nav-menu">
             <a href="#books" class="nav-item active">
