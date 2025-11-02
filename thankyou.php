@@ -7,7 +7,7 @@
     <title>READIFY Bookstore</title>
     <link rel="icon" type="image/png" href="/assets/img-title.png">
 
-    <link rel="stylesheet" href="/css/thankyou.css">
+    <link rel="stylesheet" href="./css/thankyou.css">
 </head>
 
 <body>
