@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,33 +18,46 @@
 <body>
 
   <body>
-    <!--Header -->
-    <header class="header">
-      <div class="container-inner">
-        <a href="index.html" class="logo-link">
-          <div class="logo">
-            <h1>READIFY</h1>
-            <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
-          </div>
-        </a>
-        <button class="hamburger" id="hamburger">&#9776;</button>
-        <nav class="nav-link" id="nav">
-          <button class="close-icon" id="close-icon">&times;</button>
-      <ul>
+   <!--Header -->
+  <header class="header">
+    <div class="container-inner">
+      <a href="#" class="logo-link">
+        <div class="logo">
+          <h1>READIFY</h1>
+          <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
+        </div>
+      </a>
+      <button class="hamburger" id="hamburger">&#9776;</button>
+      <nav class="nav-link" id="nav">
+        <button class="close-icon" id="close-icon">&times;</button>
+        <ul>
           <li><a href="./index.php">Home</a></li>
           <li><a href="./product.php">Books</a></li>
           <li><a href="./aboutus.php">About Us</a></li>
           <li><a href="./contact.php">Contact Us</a></li>
           <li><a href="./cart.php">Cart</a></li>
 
- <li id="user-info"></li>
-          <li><a href="./loginPage.php" id="auth-action">Sign In</a></li>
+          
+          <!-- USER NAME (only if logged in) -->
+          <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+            <li id="user-info">
+              <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+            </li>
+          <?php endif; ?>
 
-          </ul>
+          <!-- SIGN IN / SIGN OUT -->
+          <li>
+            <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+              <a href="./logout.php" id="auth-action">Sign Out</a>
+            <?php else: ?>
+              <a href="./loginPage.php" id="auth-action">Sign In</a>
+            <?php endif; ?>
+          </li>
 
-        </nav>
-      </div>
-    </header>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
     <body>
       <header>
@@ -80,7 +96,7 @@
     </body>
 
    
-  <!-- Footer -->
+    <!-- Footer -->
   <section class="footer">
     <div class="footer-row">
       <div class="footer-col">
@@ -97,15 +113,14 @@
       <div class="footer-col">
         <h4>Explore</h4>
         <ul class="links">
-          <li><a href="/feedback.php">Customer Feedback</a></li>
-          <li><a href="/offers.php">Offers</a></li>
-          <li><a href="/payment.php">payment</a></li>
+          <li><a href="./feedback.php">Customer Feedback</a></li>
+          <li><a href="./offers.php">Offers</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul class="links">
-          <li><a href="/policy.php">Privacy Policy</a></li>
+          <li><a href="./policy.php">Privacy Policy</a></li>
           <li><a href="./FAQ.php">FAQ</a></li>
         </ul>
       </div>

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,14 +11,24 @@
   <link rel="icon" type="image/png" href="/assets/img-title.png">
   <link rel="stylesheet" href="./css/aboutus.css">
   <link rel="stylesheet" href="./css/common.css">
+  <style>
+    #user-info{
+      color: black;
+      font-size: large;
+      background-color: greenyellow;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50px;
+    }
+  </style>
 </head>
 
 <body>
-
-  <!-- Header -->
+  
+<!--Header -->
   <header class="header">
     <div class="container-inner">
-      <a href="index.html" class="logo-link">
+      <a href="#" class="logo-link">
         <div class="logo">
           <h1>READIFY</h1>
           <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
@@ -31,11 +44,23 @@
           <li><a href="./contact.php">Contact Us</a></li>
           <li><a href="./cart.php">Cart</a></li>
 
-          <li id="user-info"></li>
-          <li><a href="./loginPage.php" id="auth-action">Sign In</a></li>
+          <!-- USER NAME (only if logged in) -->
+          <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+            <li id="user-info">
+              <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+            </li>
+          <?php endif; ?>
+
+          <!-- SIGN IN / SIGN OUT -->
+          <li>
+            <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+              <a href="./logout.php" id="auth-action">Sign Out</a>
+            <?php else: ?>
+              <a href="./loginPage.php" id="auth-action">Sign In</a>
+            <?php endif; ?>
+          </li>
 
         </ul>
-
       </nav>
     </div>
   </header>
@@ -129,3 +154,48 @@
   </section>
 
 
+  <!-- Footer -->
+  <section class="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Useful Links</h4>
+        <ul class="links">
+          <li><a href="./index.php">Home</a></li>
+          <li><a href="./aboutus.php">About Us</a></li>
+          <li><a href="./contact.php">Contact Us</a></li>
+          <li><a href="./cart.php">Cart</a></li>
+          <li><a href="./ordered_items.php">Orders</a></li>
+
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="./feedback.php">Customer Feedback</a></li>
+          <li><a href="./offers.php">Offers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul class="links">
+          <li><a href="./policy.php">Privacy Policy</a></li>
+          <li><a href="./FAQ.php">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p>
+          Subscribe to our newsletter for a weekly dose of news, updates,
+          helpful tips, and exclusive offers.
+        </p>
+        <form action="#">
+          <input type="text" placeholder="Your email" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+<body>
+<html>

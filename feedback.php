@@ -1,6 +1,6 @@
 <?php
 require_once 'config/db_connection.php';
-
+session_start();
 // Handle feedback form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_feedback'])) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -34,9 +34,9 @@ mysqli_close($conn);
 <body>
 
 <!--Header -->
-<header class="header">
+  <header class="header">
     <div class="container-inner">
-      <a href="index.php" class="logo-link">
+      <a href="#" class="logo-link">
         <div class="logo">
           <h1>READIFY</h1>
           <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
@@ -45,17 +45,34 @@ mysqli_close($conn);
       <button class="hamburger" id="hamburger">&#9776;</button>
       <nav class="nav-link" id="nav">
         <button class="close-icon" id="close-icon">&times;</button>
-<ul>
+        <ul>
           <li><a href="./index.php">Home</a></li>
           <li><a href="./product.php">Books</a></li>
           <li><a href="./aboutus.php">About Us</a></li>
           <li><a href="./contact.php">Contact Us</a></li>
           <li><a href="./cart.php">Cart</a></li>
+
+          <!-- USER NAME (only if logged in) -->
+          <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+            <li id="user-info">
+              <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+            </li>
+          <?php endif; ?>
+
+          <!-- SIGN IN / SIGN OUT -->
+          <li>
+            <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+              <a href="./logout.php" id="auth-action">Sign Out</a>
+            <?php else: ?>
+              <a href="./loginPage.php" id="auth-action">Sign In</a>
+            <?php endif; ?>
+          </li>
+
         </ul>
       </nav>
     </div>
-</header>
-
+  </header>
+  
 <!-- Feedback Form -->
 <section class="form-of-feedback">
     <div class="container-feedback">
@@ -102,7 +119,7 @@ mysqli_close($conn);
 </div>
 
 
-  <!-- Footer -->
+   <!-- Footer -->
   <section class="footer">
     <div class="footer-row">
       <div class="footer-col">
@@ -119,15 +136,14 @@ mysqli_close($conn);
       <div class="footer-col">
         <h4>Explore</h4>
         <ul class="links">
-          <li><a href="/feedback.php">Customer Feedback</a></li>
-          <li><a href="/offers.php">Offers</a></li>
-          <li><a href="/payment.php">payment</a></li>
+          <li><a href="./feedback.php">Customer Feedback</a></li>
+          <li><a href="./offers.php">Offers</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul class="links">
-          <li><a href="/policy.php">Privacy Policy</a></li>
+          <li><a href="./policy.php">Privacy Policy</a></li>
           <li><a href="./FAQ.php">FAQ</a></li>
         </ul>
       </div>
