@@ -247,7 +247,7 @@ $total_price = 0;
       </div>
     </div>
   </section>
-
-  <script src="/js/main.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
