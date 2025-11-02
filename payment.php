@@ -72,8 +72,7 @@ if (isset($_POST['pay_now'])) {
 
       echo "
         <script>
-          alert('✅ Payment successful! Your order has been placed.');
-          window.location.href = 'ordered_items.php';
+          window.location.href = 'thankyou.php';
         </script>
       ";
       exit;
