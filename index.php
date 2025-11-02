@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'config/db_connection.php';
 
 // =============================
@@ -41,35 +42,65 @@ mysqli_close($conn);
   <link rel="icon" type="image/png" href="/assets/img-title.png" />
   <link rel="stylesheet" href="./css/common.css" />
   <link rel="stylesheet" href="./css/home.css" />
+  <style>
+
+    #user-info{
+      color: black;
+      font-size: large;
+      background-color: greenyellow;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50px;
+    }
+  </style>
 </head>
 
 <body>
-  <!--Header -->
-  <header class="header">
-    <div class="container-inner">
-      <a href="#" class="logo-link">
-        <div class="logo">
-          <h1>READIFY</h1>
-          <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
-        </div>
-      </a>
-      <button class="hamburger" id="hamburger">&#9776;</button>
-      <nav class="nav-link" id="nav">
-        <button class="close-icon" id="close-icon">&times;</button>
-        <ul>
-          <li><a href="./index.php">Home</a></li>
-          <li><a href="./product.php">Books</a></li>
-          <li><a href="./aboutus.php">About Us</a></li>
-          <li><a href="./contact.php">Contact Us</a></li>
-          <li><a href="./cart.php">Cart</a></li>
-          <li><a href="./admin.php">admin</a></li>
+  
+  <!-- Header -->
+<header class="header">
+  <div class="container-inner">
+    <a href="#" class="logo-link">
+      <div class="logo">
+        <h1>READIFY</h1>
+        <img src="./assets/title.png" alt="BookShop Logo" class="logo-resize" />
+      </div>
+    </a>
+    <button class="hamburger" id="hamburger">&#9776;</button>
+    <nav class="nav-link" id="nav">
+      <button class="close-icon" id="close-icon">&times;</button>
+      <ul>
+        <li><a href="./index.php">Home</a></li>
+        <li><a href="./product.php">Books</a></li>
+        <li><a href="./aboutus.php">About Us</a></li>
+        <li><a href="./contact.php">Contact Us</a></li>
+        <li><a href="./cart.php">Cart</a></li>
 
-          <li id="user-info"></li>
-          <li><a href="./loginPage.php" id="auth-action">Sign In</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+        <!-- ADMIN LINK: Only show if logged-in user email is exactly 'admin@gmail.com' -->
+        <?php if (isset($_SESSION['user_email']) && $_SESSION['user_email'] === 'admin@gmail.com'): ?>
+          <li><a href="./admin.php">DashBorad</a></li>
+        <?php endif; ?>
+
+        <!-- USER NAME (only if logged in) -->
+        <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+          <li id="user-info">
+            <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+          </li>
+        <?php endif; ?>
+
+        <!-- SIGN IN / SIGN OUT -->
+        <li>
+          <?php if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])): ?>
+            <a href="./logout.php" id="auth-action">Sign Out</a>
+          <?php else: ?>
+            <a href="./loginPage.php" id="auth-action">Sign In</a>
+          <?php endif; ?>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
 
   <!--Slider Section -->
   <div class="container-slider">
@@ -127,7 +158,7 @@ mysqli_close($conn);
   <!-- Featured Books -->
   <section id="featured" class="section">
     <h2 style="text-align: center;">Featured Books</h2>
-      <div class="container-Book container-New-Book">
+    <div class="container-Book container-New-Book">
       <?php foreach ($featuredBooks as $book): ?>
         <div class="containerCard">
           <div class="imageBox">
@@ -245,7 +276,7 @@ mysqli_close($conn);
   <!--bottom box -->
   <div class="container-bottom-box">
     <h1 style="text-transform: uppercase">Shopping with us</h1>
-    <a href="/product.html"><button class="button-shop-now">Shop Now</button></a>
+    <a href="./product.php"><button class="button-shop-now">Shop Now</button></a>
   </div>
 
   <!-- Footer -->
@@ -265,15 +296,14 @@ mysqli_close($conn);
       <div class="footer-col">
         <h4>Explore</h4>
         <ul class="links">
-          <li><a href="/feedback.php">Customer Feedback</a></li>
-          <li><a href="/offers.php">Offers</a></li>
-          <li><a href="/payment.php">payment</a></li>
+          <li><a href="./feedback.php">Customer Feedback</a></li>
+          <li><a href="./offers.php">Offers</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <ul class="links">
-          <li><a href="/policy.php">Privacy Policy</a></li>
+          <li><a href="./policy.php">Privacy Policy</a></li>
           <li><a href="./FAQ.php">FAQ</a></li>
         </ul>
       </div>
@@ -297,4 +327,3 @@ mysqli_close($conn);
 </body>
 
 </html>
-

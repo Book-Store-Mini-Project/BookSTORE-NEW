@@ -1,0 +1,285 @@
+/* -------------------------------------------------
+   CART PAGE – MODERN, RESPONSIVE & POLISHED
+   Replace the content of ./css/cartstyle.css.css with this
+   ------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* -------------------------------------------------
+   1. VARIABLES & GLOBAL RESET
+   ------------------------------------------------- */
+:root {
+  --clr-primary   : #8FD14F;      /* vibrant green */
+  --clr-primary-d : #6fa33a;
+  --clr-danger    : #e63946;
+  --clr-danger-d  : #c1121f;
+  --clr-bg        : #fafafa;
+  --clr-card      : #ffffff;
+  --clr-text      : #222222;
+  --clr-muted     : #666666;
+  --radius        : 12px;
+  --gap           : 1.5rem;
+  --transition    : all 0.25s ease;
+  --shadow-sm     : 0 2px 6px rgba(0,0,0,.08);
+  --shadow-md     : 0 6px 18px rgba(0,0,0,.12);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------
+   2. CART PAGE WRAPPER
+   ------------------------------------------------- */
+.container-cart-items {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 var(--gap);
+}
+
+/* -------------------------------------------------
+   3. CART ITEMS GRID
+   ------------------------------------------------- */
+.inner-cart {
+  display: grid;
+  gap: var(--gap);
+  margin-bottom: 2rem;
+}
+
+/* -------------------------------------------------
+   4. INDIVIDUAL CARD
+   ------------------------------------------------- */
+.cart-Card {
+  background: var(--clr-card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 120px auto auto auto; /* name | img | price | qty | remove */
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeIn 0.45s forwards;
+}
+
+.cart-Card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* Stagger animation for multiple cards */
+.cart-Card:nth-child(1) { animation-delay: .1s; }
+.cart-Card:nth-child(2) { animation-delay: .2s; }
+.cart-Card:nth-child(3) { animation-delay: .3s; }
+/* add more if needed */
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------------------------------------
+   5. CARD ELEMENTS
+   ------------------------------------------------- */
+.cart-item { 
+  grid-column: 1 / -1; 
+  display: contents; /* lets children participate in the parent grid */
+}
+
+/* Book name */
+.description {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Image */
+.image-resize {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  border-radius: calc(var(--radius) / 2);
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Price */
+.price {
+  font-weight: 600;
+  color: var(--clr-primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Quantity controls */
+.btn-increment {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: .25rem;
+  width: fit-content;
+}
+
+.btn-minus,
+.btn-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.btn-minus {
+  background: var(--clr-danger);
+  color: #fff;
+}
+.btn-plus {
+  background: var(--clr-primary);
+  color: #fff;
+}
+.btn-minus:hover { background: var(--clr-danger-d); }
+.btn-plus:hover  { background: var(--clr-primary-d); }
+
+.btn-increment span {
+  min-width: 2ch;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Total per item */
+.total {
+  font-weight: 600;
+  color: var(--clr-primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Remove button */
+.delete-btn {
+  background: var(--clr-danger);
+  color: #fff;
+  border: none;
+  padding: .6rem 1rem;
+  border-radius: 6px;
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.delete-btn:hover {
+  background: var(--clr-danger-d);
+}
+
+/* -------------------------------------------------
+   6. ORDER SUMMARY
+   ------------------------------------------------- */
+.place-order {
+  max-width: 1100px;
+  margin: 0 auto 3rem;
+  padding: 0 var(--gap);
+  text-align: center;
+  background: var(--clr-card);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.place-order h2 {
+  margin: 0 0 .5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.place-order h2:last-of-type {
+  color: var(--clr-primary);
+  font-size: 1.8rem;
+}
+
+.place-order-btn {
+  margin-top: 1rem;
+  background: var(--clr-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .9rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.place-order-btn:hover {
+  background: var(--clr-primary-d);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------------
+   7. EMPTY CART MESSAGE
+   ------------------------------------------------- */
+.inner-cart:empty + .place-order::before,
+.inner-cart p {
+  display: block;
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--clr-muted);
+  margin: 4rem 0;
+}
+
+/* -------------------------------------------------
+   8. RESPONSIVE BREAKPOINTS
+   ------------------------------------------------- */
+@media (max-width: 900px) {
+  .cart-Card {
+    grid-template-columns: 1fr 100px auto auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-Card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .image-resize { max-width: 150px; margin: 0 auto; }
+  .btn-increment { justify-content: center; }
+  .delete-btn { margin: 1rem auto 0; width: fit-content; }
+}
+
+@media (max-width: 480px) {
+  .description { font-size: 1.1rem; }
+  .price, .total { font-size: .95rem; }
+  .btn-minus, .btn-plus { width: 32px; height: 32px; font-size: 1rem; }
+  .place-order h2 { font-size: 1.3rem; }
+  .place-order h2:last-of-type { font-size: 1.6rem; }
+}
+
+/* -------------------------------------------------
+   9. ACCESSIBILITY
+   ------------------------------------------------- */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--clr-primary);
+  outline-offset: 2px;
+}
